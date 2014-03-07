@@ -125,7 +125,7 @@ value of the function can be fetched when joined.
 >>>     time.sleep(delay)
 >>>     return value ** 2
 >>> 
->>> sig = signal(f)(0.25, 2)
+>>> sig = signal(f)(0.25, 4)
 >>> print('between')
 >>> print(sig.join())
 between
