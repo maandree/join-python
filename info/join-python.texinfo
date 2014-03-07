@@ -54,7 +54,8 @@ Texts. A copy of the license is included in the section entitled
 * Signals::                         The signal construct.
 * Fragments::                       The fragment join construct.
 * Join-switches::                   Advanced joining techniques.
-* Fork–merge::                      Running multiple functions concurrently synchronously
+* Fork–merge::                      Running multiple functions concurrently synchronously.
+* Working with Classes::            Support for classes.
 * GNU Free Documentation License::  Copying and sharing this manual.
 @end menu
 
@@ -303,6 +304,40 @@ In parallel
 In parallel
 In parallel
 [16, 27]
+@end example
+@end cartouche
+
+
+
+@node Working with Classes
+@chapter Working with Classes
+
+If a signal or fragment is a part of a class, it is
+automatically made into a static function. To make a
+function into an instance function or instance method,
+you need to decorate it with @code{@@joinmethod}.
+
+@cartouche
+@example
+>>> from join import *
+>>> 
+>>> class Class:
+>>>     def __init__(self, value):
+>>>         self.value = value
+>>> 
+>>>     @@joinmethod    
+>>>     @@fragment
+>>>     def fi(self):
+>>>         return self.value ** 3
+>>>     
+>>>     @@fragment
+>>>     def fs(value):
+>>>         return value ** 3
+>>> 
+>>> Class.fs(2)
+8
+>>> Class(2).fi()
+8
 @end example
 @end cartouche
 
