@@ -161,11 +161,11 @@ function returned.
 >>> from join import *
 >>> 
 >>> @@fragment
->>> def fragment(value):
+>>> def frag(value):
 >>>     return value ** 2
 >>> 
 >>> def f(value):
->>>     ((fragment_value,), _kwargs, rc) = join(fragment)
+>>>     ((frag_value,), _kwargs, rc) = join(frag)
 >>>     return rc + fragment_value + value
 >>> 
 >>> fragment(2)
