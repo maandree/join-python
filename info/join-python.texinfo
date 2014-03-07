@@ -59,6 +59,14 @@ Texts. A copy of the license is included in the section entitled
 @node Overview
 @chapter Overview
 
+Join Python is a Python 3 library that implements join-calculus.
+Join Python can be used by importing the module @code{join} in
+any Python 3 program, provided that Join Python is installed.
+
+Join Python provides the ability to write more concise code using
+almost any published concurrency pattern with explicit monitor calls.
+
+
 
 @node GNU Free Documentation License
 @appendix GNU Free Documentation License
