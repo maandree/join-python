@@ -166,7 +166,7 @@ function returned.
 >>> 
 >>> def f(value):
 >>>     ((frag_value,), _kwargs, rc) = join(frag)
->>>     return rc + fragment_value + value
+>>>     return rc + frag_value + value
 >>> 
 >>> fragment(2)
 >>> print(f(3))
