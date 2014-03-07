@@ -73,7 +73,7 @@ def unordered_join(*f_groups):
             params = join(*fs)
             condition.acquire()
             if rc is None:
-                params = rc
+                params = (index, rc)
                 condition.release()
             else:
                 condition.release()
