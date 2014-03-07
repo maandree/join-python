@@ -205,7 +205,7 @@ def concurrently(*fs):
     '''
     ts = [threading.Thread(target = f) for f in fs]
     for t in ts:
-        ts.start()
+        t.start()
     for t in ts:
-        ts.join()
+        t.join()
 
