@@ -71,13 +71,16 @@ def unordered_join(*f_groups):
     for f_group in f_groups:
         def join_(fs, index):
             params = join(*fs)
-            condition.acquire()
+            already_done = rc is not None
+            if not already_done:
+                condition.acquire()
             if rc is None:
                 params = (index, rc)
                 condition.notify()
                 condition.release()
             else:
-                condition.release()
+                if not already_done:
+                    condition.release()
                 if len(fs) == 1:
                     fs[0].unjoin(*params)
                 else:
