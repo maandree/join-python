@@ -19,6 +19,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 '''
 
 import time
+
+import random
 import threading
 
 
@@ -91,7 +93,12 @@ def ordered_join(*f_groups):
 
 
 def unordered_join(*f_groups):
-    pass
+    ready = [i for i, fs in enumerate(f_groups) if all([len(f.queue) for f in fs])]
+    if len(ready):
+        i = ready[random.randrange(len(ready))]
+        return (i, join(*(f_groups[i]))
+    else:
+        return ordered_join(*f_groups)
 
 
 # extra, not a part of join-calculus
