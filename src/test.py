@@ -124,6 +124,12 @@ print('  Last (delayed c:a 1 s)')
 print()
 
 
+print('Testing connurrently with @signal and @puresignal')
+concurrently(signal(lambda : c(0)), signal(lambda : c(1)), puresignal(lambda : c(2)), puresignal(lambda : c(3)))
+print('  Last (delayed c:a 1 s)')
+print()
+
+
 @signal
 def fsig1(value):
     pass

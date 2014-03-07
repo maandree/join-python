@@ -217,13 +217,15 @@ def concurrently(*fs):
     '''
     Run a set of functions concurrently and wait for all of them to return
     
-    @param  fs:*()→void  The functions to run
+    @param   fs:*()→(void|join()→...)  The functions to run
+    @return  :list<...>                The return of each functions, assuming it a signal
     '''
-    ts = [threading.Thread(target = f) for f in fs]
-    for t in ts:
-        t.start()
-    for t in ts:
-        t.join()
+    def t(f):
+        thread = threading.Thread(target = f)
+        thread.start()
+        return thread
+    ts = [f() if isinstance(f, signal) or isinstance(f, puresignal) else t(f) for f in fs]
+    return [t.join() for t in ts]
 
 
 
