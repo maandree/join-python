@@ -30,7 +30,7 @@ class signal:
         '''
         Constructor
         
-        @param  f:(...)→¿R?  The decorated function
+        @param  f:(*..., **...)→¿R?  The decorated function
         '''
         self.f = f
     
@@ -39,11 +39,11 @@ class signal:
         '''
         Function invocation method
         
-        @param   args:*...    Positional arguments
-        @param   kwargs:*...  Named arguments
-        @return  :join()→¿R?  Object with an argumentless function, `join`, that
-                              joins with the signal and returns the signals return.
-                              This is an extension to join-calculus
+        @param   args:*...     Positional arguments
+        @param   kwargs:**...  Named arguments
+        @return  :join()→¿R?   Object with an argumentless function, `join`, that
+                               joins with the signal and returns the signals return.
+                               This is an extension to join-calculus
         '''
         class signal_:
             def __init__(self, f):
@@ -78,9 +78,9 @@ class fragment:
         '''
         Function invocation method
         
-        @param   args:*...    Positional arguments
-        @param   kwargs:*...  Named arguments
-        @return  :¿R?         The value returned by the functon
+        @param   args:*...     Positional arguments
+        @param   kwargs:**...  Named arguments
+        @return  :¿R?          The value returned by the functon
         '''
         rc = self.f(*args, **kwargs)
         self.condition.acquire()
