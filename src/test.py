@@ -153,3 +153,21 @@ unjoining(1)
 unjoining(2)
 print()
 
+
+class C:
+    def __init__(self, value):
+        self.value = value
+    
+    @joinmethod
+    @fragment
+    def f(self, v):
+        print('  %i' % (self.value + v))
+
+f1 = C(1).f
+f2 = C(2).f
+
+print('Testing @joinmethod, expecting 11,22')
+f1(10)
+f2(20)
+print()
+
