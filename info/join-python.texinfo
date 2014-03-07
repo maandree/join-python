@@ -203,6 +203,9 @@ for the @code{join} call.
 @end example
 @end cartouche
 
+As with @code{@@signals}, you can use constructor of @code{fragment}
+instead of a the @code{@@fragment} decorator.
+
 
 
 @node GNU Free Documentation License
