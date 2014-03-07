@@ -74,6 +74,7 @@ def unordered_join(*f_groups):
             condition.acquire()
             if rc is None:
                 params = (index, rc)
+                condition.notify()
                 condition.release()
             else:
                 condition.release()
