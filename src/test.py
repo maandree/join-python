@@ -36,7 +36,7 @@ def f3():
 
 
 def unordered_f123():
-    (case, (jargs, jkwargs, jrc)) = unordered_join((f1,), (f2,), (f3,))
+    (case, (jargs, jkwargs, jrc)) = unordered_join((f1,), f2, (f3,))
     return case
 
 def unordered():
@@ -52,7 +52,7 @@ print()
 
 
 def ordered_f123():
-    (case, (jargs, jkwargs, jrc)) = ordered_join((f1,), (f2,), (f3,))
+    (case, (jargs, jkwargs, jrc)) = ordered_join((f1,), f2, (f3,))
     return case
 
 def ordered():

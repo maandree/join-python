@@ -151,7 +151,7 @@ def ordered_join(*f_groups):
     If there are matched fragments groups that have already returned, the one
     that appears first the case set is selected.
     
-    @param   f_groups:*itr<fragment>  The fragments groups
+    @param   f_groups:*(itr<fragment>|fragment)  The fragment groups
     @return  :(int, (args:tuple<...>, kwargs:dict<str, ...>, rc:¿R?)|list<←>)
                      The index (zero-based) of the selected case and the positional arguments, and
                      arguments with which the fragments were invoked and the value returned (extension
@@ -160,6 +160,7 @@ def ordered_join(*f_groups):
     condition = threading.Condition()
     rc, done = None, False
     index = 0
+    f_groups = [((group,) if isinstance(group, fragment) else group) for group in f_groups]
     for f_group in f_groups:
         def join_(fs, index):
             nonlocal rc, done, condition
@@ -196,12 +197,13 @@ def unordered_join(*f_groups):
     If there are matched fragments groups that have already returned, one is
     selected at random, uniformally.
     
-    @param   f_groups:*itr<fragment>  The fragments groups
+    @param   f_groups:*(itr<fragment>|fragment)  The fragment groups
     @return  :(int, (args:tuple<...>, kwargs:dict<str, ...>, rc:¿R?)|list<←>)
                      The index (zero-based) of the selected case and the positional arguments, and
                      arguments with which the fragments were invoked and the value returned (extension
                      to join-calculus) by those invocations (as a list of not exactly one fragement)
     '''
+    f_groups = [((group,) if isinstance(group, fragment) else group) for group in f_groups]
     ready = [i for i, fs in enumerate(f_groups) if all([len(f.queue) for f in fs])]
     if len(ready):
         i = ready[random.randrange(len(ready))]
