@@ -51,6 +51,7 @@ Texts. A copy of the license is included in the section entitled
 
 @menu
 * Overview::                        Brief overview of Join Python.
+* Signals::                         The signal construct.
 * GNU Free Documentation License::  Copying and sharing this manual.
 @end menu
 
@@ -66,6 +67,74 @@ any Python 3 program, provided that Join Python is installed.
 Join Python provides the ability to write more concise code using
 almost any published concurrency pattern with explicit monitor calls.
 
+
+
+@node Signals
+@chapter Signals
+
+A signal it as function that runs asynchronously. It is put
+in its own thread. To declare a signal, add the @code{@@signal}
+decorator to a function definition or pass function to the
+the constructor of the class @code{signal}.
+
+@cartouche
+@example
+>>> from join import *
+>>> import time
+>>> 
+>>> @@signal
+>>> def sig(delay, value):
+>>>     time.sleep(delay)
+>>>     print(value)
+>>> 
+>>> sig(0.25, 'first')
+>>> print('last')
+last
+first
+@end example
+@end cartouche
+
+@cartouche
+@example
+>>> from join import *
+>>> import time
+>>> 
+>>> def f(delay, value):
+>>>     time.sleep(delay)
+>>>     print(value)
+>>> 
+>>> signal(f)(0.25, 'first')
+>>> print('last')
+last
+first
+@end example
+@end cartouche
+
+As an extension to join-calculus, signals
+in Join Java can be joined with the returned
+value of the function can be fetched when joined.
+
+@cartouche
+@example
+>>> from join import *
+>>> import time
+>>> 
+>>> def f(delay, value):
+>>>     time.sleep(delay)
+>>>     return value ** 2
+>>> 
+>>> sig = signal(f)(0.25, 2)
+>>> print('between')
+>>> print(sig.join())
+between
+16
+@end example
+@end cartouche
+
+In the next chapter fragments will be introduced.
+If you want a signal without a fragment capability
+use @code{@@puresignal} or @code{puresignal} instead
+of @code{@@signal} or @code{signal}.
 
 
 @node GNU Free Documentation License
