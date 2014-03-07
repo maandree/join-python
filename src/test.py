@@ -30,7 +30,7 @@ class signal:
         threading.Thread(target = self.f, args = args, kwargs = kwargs).start()
 
 
-class joinable:
+class fragment:
     def __init__(self, f):
         self.f = f
         self.queue = []
@@ -40,6 +40,12 @@ class joinable:
         self.f(*args, **kwargs)
         self.condition.acquire()
         self.queue.append((args, kwargs))
+        self.condition.notify()
+        self.condition.release()
+    
+    def unjoin(self, args, kwargs):
+        self.condition.acquire()
+        self.queue.insert(0, (args, kwargs))
         self.condition.notify()
         self.condition.release()
 
@@ -54,21 +60,51 @@ def join(*fs):
     return rc[0] if len(fs) == 1 else rc
 
 
+def ordered_join(*f_groups):
+    pass
+
+
+def unordered_join(*f_groups):
+    condition = threading.Condition()
+    rc = None
+    index = 0
+    for f_group in f_groups:
+        def join_(fs, index):
+            params = join(*fs)
+            condition.acquire()
+            if rc is None:
+                params = rc
+                condition.release()
+            else:
+                condition.release()
+                if len(fs) == 1:
+                    fs[0].unjoin(*params)
+                else:
+                    for i, f in enumerate(fs):
+                        f.unjoin(*(params[i]))
+        threading.Thread(target = join_, args = (f_group, index)).start()
+        index += 1
+    condition.acquire()
+    condition.wait()
+    condition.release()
+    return rc
+
+
 class test:
     @signal
     def signal(f, *args):
         f(*args)
     
-    @joinable
-    def joinable(*args, **kwargs):
+    @fragment
+    def fragment(*args, **kwargs):
         pass
     
     def join(param):
-        (jargs, jkwargs) = join(test.joinable)
+        (jargs, jkwargs) = join(test.fragment)
         print(param, dict(jkwargs), *jargs)
 
 
 test.signal(test.join, 'join')
 time.sleep(1)
-test.joinable('arg1', 'arg2', a = 'A', b = 'B')
+test.fragment('arg1', 'arg2', a = 'A', b = 'B')
 
