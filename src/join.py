@@ -21,7 +21,7 @@ import random
 import threading
 
 
-class signal:
+class puresignal:
     '''
     Function decorator for signals, functions that run asynchronously
     '''
@@ -104,9 +104,9 @@ class fragment:
 
 
 
-class fsignal(fragment):
+class signal(fragment):
     '''
-    Shorthand for @fragment @signal
+    Shorthand for @fragment @puresignal
     '''
     def __init__(self, f):
         '''
@@ -114,7 +114,7 @@ class fsignal(fragment):
         
         @param  f:(...)→¿R?  The decorated function
         '''
-        fragment.__init__(self, signal(f))
+        fragment.__init__(self, puresignal(f))
 
 
 

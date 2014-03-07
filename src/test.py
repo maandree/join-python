@@ -67,7 +67,7 @@ print([ordered() for _ in range(100)])
 print()
 
 
-@signal
+@puresignal
 def sig():
     time.sleep(0.25)
     print('  first')
@@ -82,17 +82,17 @@ print()
 
 
 @fragment
-@signal
+@puresignal
 def fsig1(value):
     pass
 
 @fragment
-@signal
+@puresignal
 def fsig2(value):
     pass
 
 @fragment
-@signal
+@puresignal
 def fsig3(value):
     pass
 
@@ -124,15 +124,15 @@ print('  Last (delayed c:a 1 s)')
 print()
 
 
-@fsignal
+@signal
 def fsig1(value):
     pass
 
-@fsignal
+@signal
 def fsig2(value):
     pass
 
-@fsignal
+@signal
 def fsig3(value):
     pass
 
@@ -147,7 +147,7 @@ def unjoining(index):
     print(' ', *jargs)
     time.sleep(0.25)
 
-print('Testing @fsignal, expecting 1,2,1')
+print('Testing @signal, expecting 1,2,1')
 unjoining(0)
 unjoining(1)
 unjoining(2)
