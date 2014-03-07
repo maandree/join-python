@@ -1,4 +1,3 @@
-#!/usr/bin/python3
 # -*- python -*-
 '''
 join python – Join-calculus for Python
