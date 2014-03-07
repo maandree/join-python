@@ -96,7 +96,7 @@ class fragment:
         
         @param  args:tuple<...>        Positional arguments
         @param  kwargs:dict<str, ...>  Named arguments
-        @param  rc:¿V?                 The returned value
+        @param  rc:¿R?                 The returned value
         '''
         self.condition.acquire()
         self.queue.insert(0, (args, kwargs, rc))
