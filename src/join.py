@@ -18,8 +18,6 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 '''
 
-import time
-
 import random
 import threading
 
@@ -117,25 +115,4 @@ def concurrently(*fs):
         ts.start()
     for t in ts:
         ts.join()
-
-
-class test:
-    @signal
-    def signal(f, *args):
-        f(*args)
-        return 'test'
-    
-    @fragment
-    def fragment(*args, **kwargs):
-        pass
-    
-    def join(param):
-        (jargs, jkwargs) = join(test.fragment)
-        print(param, dict(jkwargs), *jargs)
-
-
-s = test.signal(test.join, 'join')
-time.sleep(1)
-test.fragment('arg1', 'arg2', a = 'A', b = 'B')
-print(s.join())
 
