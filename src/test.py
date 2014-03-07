@@ -111,7 +111,6 @@ def unordered_join(*f_groups):
         return ordered_join(*f_groups)
 
 
-# extra, not a part of join-calculus
 def concurrently(*fs):
     ts = [threading.Thread(target = f, args = args, kwargs = kwargs) for f in fs]
     for t in ts:
