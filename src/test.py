@@ -29,7 +29,17 @@ class signal:
         self.f = f
     
     def __call__(self, *args, **kwargs):
-        threading.Thread(target = self.f, args = args, kwargs = kwargs).start()
+        class signal_:
+            def __init__(self, f):
+                def f_():
+                    self.rc = f(*args, **kwargs)
+                self.rc = None
+                self.t = threading.Thread(target = f_)
+                self.t.start()
+            def join(self):
+                self.t.join()
+                return self.rc
+        return signal_(self.f)
 
 
 class fragment:
@@ -96,7 +106,7 @@ def unordered_join(*f_groups):
     ready = [i for i, fs in enumerate(f_groups) if all([len(f.queue) for f in fs])]
     if len(ready):
         i = ready[random.randrange(len(ready))]
-        return (i, join(*(f_groups[i]))
+        return (i, join(*(f_groups[i])))
     else:
         return ordered_join(*f_groups)
 
@@ -114,6 +124,7 @@ class test:
     @signal
     def signal(f, *args):
         f(*args)
+        return 'test'
     
     @fragment
     def fragment(*args, **kwargs):
@@ -124,7 +135,8 @@ class test:
         print(param, dict(jkwargs), *jargs)
 
 
-test.signal(test.join, 'join')
+s = test.signal(test.join, 'join')
 time.sleep(1)
 test.fragment('arg1', 'arg2', a = 'A', b = 'B')
+print(s.join())
 
