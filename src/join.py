@@ -227,7 +227,7 @@ def concurrently(*fs):
 
 def joinmethod(f):
     '''
-    Make a fragment of signal an instance method rather than a static method
+    Make a fragment or signal an instance method rather than a static method
     
     @param   f:(self, *..., **...)→¿R?  The static method
     @return  f:(self, *..., **...)→¿R?  The method made into a instance method
