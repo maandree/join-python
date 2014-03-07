@@ -94,6 +94,15 @@ def unordered_join(*f_groups):
     return rc
 
 
+# extra, not a part of join-calculus
+def concurrently(*fs):
+    ts = [threading.Thread(target = f, args = args, kwargs = kwargs) for f in fs]
+    for t in ts:
+        ts.start()
+    for t in ts:
+        ts.join()
+
+
 class test:
     @signal
     def signal(f, *args):
