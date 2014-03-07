@@ -39,15 +39,21 @@ def unordered_f123():
     (case, (jargs, jkwargs, jrc)) = unordered_join((f1,), (f2,), (f3,))
     return case
 
-def ordered_f123():
-    (case, (jargs, jkwargs, jrc)) = ordered_join((f1,), (f2,), (f3,))
-    return case
-
 def unordered():
     f1()
     f2()
     f3()
     return unordered_f123()
+
+
+print('Expecting 0,1,2 uniformally random')
+print([unordered() for _ in range(100)])
+print()
+
+
+def ordered_f123():
+    (case, (jargs, jkwargs, jrc)) = ordered_join((f1,), (f2,), (f3,))
+    return case
 
 def ordered():
     f1()
@@ -56,9 +62,55 @@ def ordered():
     return ordered_f123()
 
 
-print('Expecting 0,1,2 uniformally random')
-print([unordered() for _ in range(100)])
-
 print('Expecting 0 exclusively')
 print([ordered() for _ in range(100)])
+print()
+
+
+@signal
+def sig():
+    time.sleep(0.25)
+    print('  first')
+    return 'correct signal return'
+
+print('Testing signals')
+s = sig()
+print('  last')
+print('  signal returned: ' + s.join())
+print()
+
+
+
+@fragment
+@signal
+def fsig1(value):
+    pass
+
+@fragment
+@signal
+def fsig2(value):
+    pass
+
+@fragment
+@signal
+def fsig3(value):
+    pass
+
+
+def unjoining(index):
+    if index == 0:  fsig1(1)
+    if index == 1:  fsig2(2)
+    if index == 2:  fsig3(3)
+    (case, (jargs, jkwargs, jrc)) = ordered_join((fsig1,), (fsig2,), (fsig3,))
+    if index != 0:  fsig1(1)
+    if index != 1:  fsig2(2)
+    if index != 2:  fsig3(3)
+    print(' ', *jargs)
+    time.sleep(0.25)
+
+print('Testing internal unjoining and signal fragments, expecting 1,2,1')
+unjoining(0)
+unjoining(1)
+unjoining(2)
+print()
 
