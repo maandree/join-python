@@ -10,4 +10,12 @@ __pycache__/
 *.bak
 *.pyc
 *.pyo
+*.info
+*.pdf
+*.dvi
+*.ps
+*.tar
+*.gz
+*.bz2
+*.xz
 
