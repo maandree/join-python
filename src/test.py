@@ -44,12 +44,14 @@ class joinable:
         self.condition.release()
 
 
-def join(f):
-    f.condition.acquire()
-    f.condition.wait()
-    (jargs, jkwargs) = f.queue.pop(0)
-    f.condition.release()
-    return (jargs, jkwargs)
+def join(*fs):
+    rc = []
+    for f in fs:
+        f.condition.acquire()
+        f.condition.wait()
+        rc.append(f.queue.pop(0))
+        f.condition.release()
+    return rc[0] if len(fs) == 1 else rc
 
 
 class test:
