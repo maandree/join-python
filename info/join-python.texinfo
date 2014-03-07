@@ -230,6 +230,43 @@ the returned value is a tuple of the index of the selected
 join case (fragment group) and what @code{join} returned for
 that fragment group.
 
+@cartouche
+@example
+>>> from join import *
+>>> 
+>>> @@fragment
+>>> def f1():
+>>>     pass
+>>> 
+>>> @@fragment
+>>> def f2():
+>>>     pass
+>>> 
+>>> @@fragment
+>>> def f3():
+>>>     pass
+>>> 
+>>> def ordered():
+>>>     (case, (_jargs, _jkwargs, _jrc)) = ordered_join((f1,), (f2,), (f3,))
+>>>     return case
+>>> 
+>>> def unordered():
+>>>     (case, (_jargs, _jkwargs, _jrc)) = unordered_join((f1,), (f2,), (f3,))
+>>>     return case
+>>> 
+>>> def switch(f):
+>>>     f1()
+>>>     f2()
+>>>     f3()
+>>>     return f()
+>>> 
+>>> print([switch(ordered)   for _ in range(10)])
+>>> print([switch(unordered) for _ in range(10)])
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+[2, 2, 1, 0, 1, 2, 0, 1, 1, 2] # uniformally random
+@end example
+@end cartouche
+
 
 
 @node GNU Free Documentation License
