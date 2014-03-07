@@ -54,6 +54,7 @@ Texts. A copy of the license is included in the section entitled
 * Signals::                         The signal construct.
 * Fragments::                       The fragment join construct.
 * Join-switches::                   Advanced joining techniques.
+* Fork–merge::                      Running multiple functions concurrently synchronously
 * GNU Free Documentation License::  Copying and sharing this manual.
 @end menu
 
@@ -264,6 +265,44 @@ that fragment group.
 >>> print([switch(unordered) for _ in range(10)])
 [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 [2, 2, 1, 0, 1, 2, 0, 1, 1, 2] # uniformally random
+@end example
+@end cartouche
+
+
+
+@node Fork–merge
+@chapter Fork–merge
+
+As an extension to join-calculus Join Python offers
+a blocking function that runs multiple functions
+in parallel. @code{concurrently} takes any number
+of functions and executes them in parallel and waits
+for all of them to return. Functions that are
+signals (@code{@@signal} or @code{@@puresignal})
+will have there return value returned by
+@code{concurrently}.
+
+@cartouche
+@example
+>>> from join import *
+>>> 
+>>> @@signal
+>>> def sig(value = 4):
+>>>     print('In parallel')
+>>>     return value ** 2
+>>>
+>>> def fun(value):
+>>>     print('In parallel')
+>>>     return value ** 3
+>>> 
+>>> print(concurrently(signal(lambda : sig(2).join()), lambda : fun(3)))
+In parallel
+In parallel
+[4, None] # it is actually undefined where we get `None` here
+>>> print(concurrently(sig, signal(lambda : fun(3))))
+In parallel
+In parallel
+[16, 27]
 @end example
 @end cartouche
 
