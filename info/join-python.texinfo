@@ -53,6 +53,7 @@ Texts. A copy of the license is included in the section entitled
 * Overview::                        Brief overview of Join Python.
 * Signals::                         The signal construct.
 * Fragments::                       The fragment join construct.
+* Join-switches::                   Advanced joining techniques.
 * GNU Free Documentation License::  Copying and sharing this manual.
 @end menu
 
@@ -205,6 +206,29 @@ for the @code{join} call.
 
 As with @code{@@signals}, you can use constructor of @code{fragment}
 instead of a the @code{@@fragment} decorator.
+
+
+
+@node Join-switches
+@chapter Join-switches
+
+Join-switches is an advanced joining technique. It lets join
+join with whatever fragment group that is joined first. There
+are two versions of this: ordered joining and unordered joining.
+Ordered joining and unordered joining behaves the same if none
+of the fragment group have already joined when the joining is
+requested. But if there are more than one fragment group that
+have already joined that will behave differently: unordered
+joining will select a fragment group at random, whereas ordered
+joining will select the fragment group with highest precedence,
+that is, the fragment group specified first in the joining
+request. Ordered joining is done with the function
+@code{ordered_join} and unordered joining is done with the
+function @code{unordered_join}. They work similarly to @code{join},
+except each group is specified as a tuple of fragments and
+the returned value is a tuple of the index of the selected
+join case (fragment group) and what @code{join} returned for
+that fragment group.
 
 
 
