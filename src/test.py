@@ -61,10 +61,6 @@ def join(*fs):
 
 
 def ordered_join(*f_groups):
-    pass
-
-
-def unordered_join(*f_groups):
     condition = threading.Condition()
     rc = None
     index = 0
@@ -92,6 +88,10 @@ def unordered_join(*f_groups):
     condition.wait()
     condition.release()
     return rc
+
+
+def unordered_join(*f_groups):
+    pass
 
 
 # extra, not a part of join-calculus
