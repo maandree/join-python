@@ -168,9 +168,9 @@ function returned.
 >>>     ((frag_value,), _kwargs, rc) = join(frag)
 >>>     return rc + frag_value + value
 >>> 
->>> fragment(2)
+>>> frag(2)
 >>> print(f(3))
-10
+9
 @end example
 @end cartouche
 
