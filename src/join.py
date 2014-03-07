@@ -24,7 +24,7 @@ import threading
 
 class signal:
     '''
-    Function decorator for signals
+    Function decorator for signals, functions that run asynchronously
     '''
     def __init__(self, f):
         '''
@@ -61,7 +61,7 @@ class signal:
 
 class fragment:
     '''
-    Function decorator for fragments
+    Function decorator for fragments, functions that can be joined
     '''
     def __init__(self, f):
         '''
