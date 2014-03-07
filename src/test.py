@@ -96,7 +96,6 @@ def fsig2(value):
 def fsig3(value):
     pass
 
-
 def unjoining(index):
     if index == 0:  fsig1(1)
     if index == 1:  fsig2(2)
@@ -122,4 +121,35 @@ def c(value):
 print('Testing connurrently')
 concurrently(lambda : c(0), lambda : c(1), lambda : c(2), lambda : c(3))
 print('  Last (delayed c:a 1 s)')
+print()
+
+
+@fsignal
+def fsig1(value):
+    pass
+
+@fsignal
+def fsig2(value):
+    pass
+
+@fsignal
+def fsig3(value):
+    pass
+
+def unjoining(index):
+    if index == 0:  fsig1(1)
+    if index == 1:  fsig2(2)
+    if index == 2:  fsig3(3)
+    (case, (jargs, jkwargs, jrc)) = ordered_join((fsig1,), (fsig2,), (fsig3,))
+    if index != 0:  fsig1(1)
+    if index != 1:  fsig2(2)
+    if index != 2:  fsig3(3)
+    print(' ', *jargs)
+    time.sleep(0.25)
+
+print('Testing @fsignal, expecting 1,2,1')
+unjoining(0)
+unjoining(1)
+unjoining(2)
+print()
 

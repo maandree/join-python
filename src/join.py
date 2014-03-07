@@ -104,6 +104,20 @@ class fragment:
 
 
 
+class fsignal(fragment):
+    '''
+    Shorthand for @fragment @signal
+    '''
+    def __init__(self, f):
+        '''
+        Constructor
+        
+        @param  f:(...)→¿R?  The decorated function
+        '''
+        fragment.__init__(self, signal(f))
+
+
+
 def join(*fs):
     '''
     Join with fragments
