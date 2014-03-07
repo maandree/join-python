@@ -4,8 +4,11 @@ Status: experimenting
 
 Extensions to join-calculus:
 
-	concurrently(f...) runs a set of functions concurrently and joins with all of them
+	concurrently(f...) runs a set of functions concurrently
+	and joins with all of them
 
-	signals have join() which joins with the signal and returns its return
-	  (signals do not need to be void)
+	Signals have join() which joins with the signal and
+	returns its return (signals do not need to be void)
+
+	The return of fragments are returned when fetching
 

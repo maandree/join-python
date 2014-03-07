@@ -84,21 +84,22 @@ class fragment:
         '''
         rc = self.f(*args, **kwargs)
         self.condition.acquire()
-        self.queue.append((args, kwargs))
+        self.queue.append((args, kwargs, rc))
         self.condition.notify()
         self.condition.release()
         return rc
     
     
-    def unjoin(self, args, kwargs):
+    def unjoin(self, args, kwargs, rc):
         '''
         Used internally be the module to revert non-selected fragments in join-switches
         
-        @param   args:tuple<...>        Positional arguments
-        @param   kwargs:dict<str, ...>  Named arguments
+        @param  args:tuple<...>        Positional arguments
+        @param  kwargs:dict<str, ...>  Named arguments
+        @param  rc:¿V?                 The returned value
         '''
         self.condition.acquire()
-        self.queue.insert(0, (args, kwargs))
+        self.queue.insert(0, (args, kwargs, rc))
         self.condition.notify()
         self.condition.release()
 
@@ -108,15 +109,17 @@ def join(*fs):
     '''
     Join with fragments
     
-    @param   fs:*fragment                                     The fragments
-    @return  :list<(args:tuple<...>, kwargs:dict<str, ...>)>  The positional arguments and named arguments
-                                                              with which the fragments were invoked
+    @param   fs:*fragment  The fragments
+    @return  :list<(args:tuple<...>, kwargs:dict<str, ...>, rc:¿R?)>
+                     The positional arguments and named arguments with which the fragments were
+                     invoked and the values returned (extension to join-calculus) by those invocations
     
     -- OR --
     
-    @param   f:fragment                                 The fragment
-    @return  :(args:tuple<...>, kwargs:dict<str, ...>)  The positional arguments and named arguments
-                                                        with which the fragment were invoked
+    @param   f:fragment  The fragment
+    @return  :(args:tuple<...>, kwargs:dict<str, ...>, rc:¿R?)
+                     The positional arguments and named arguments with which the fragment as
+                     invoked and the value returned (extension to join-calculus) by that invocation
     '''
     rc = []
     for f in fs:
@@ -134,11 +137,11 @@ def ordered_join(*f_groups):
     If there are matched fragments groups that have already returned, the one
     that appears first the case set is selected.
     
-    @param   f_groups:*itr<fragment>                                   The fragments groups
-    @return  :(int, (args:tuple<...>, kwargs:dict<str, ...>)|list<←>)
-                     The index (zero-based) of the selected case and the positional arguments
-                     and named arguments with which the fragments were invoked (as a list of
-                     not exactly one fragemnt)
+    @param   f_groups:*itr<fragment>  The fragments groups
+    @return  :(int, (args:tuple<...>, kwargs:dict<str, ...>, rc:¿R?)|list<←>)
+                     The index (zero-based) of the selected case and the positional arguments, and
+                     arguments with which the fragments were invoked and the value returned (extension
+                     to join-calculus) by those invocations (as a list of not exactly one fragement)
     '''
     condition = threading.Condition()
     rc = None
@@ -176,11 +179,11 @@ def unordered_join(*f_groups):
     If there are matched fragments groups that have already returned, one is
     selected at random, uniformally.
     
-    @param   f_groups:*itr<fragment>                                   The fragments groups
-    @return  :(int, (args:tuple<...>, kwargs:dict<str, ...>)|list<←>)
-                     The index (zero-based) of the selected case and the positional arguments
-                     and named arguments with which the fragments were invoked (as a list of
-                     not exactly one fragemnt)
+    @param   f_groups:*itr<fragment>  The fragments groups
+    @return  :(int, (args:tuple<...>, kwargs:dict<str, ...>, rc:¿R?)|list<←>)
+                     The index (zero-based) of the selected case and the positional arguments, and
+                     arguments with which the fragments were invoked and the value returned (extension
+                     to join-calculus) by those invocations (as a list of not exactly one fragement)
     '''
     ready = [i for i, fs in enumerate(f_groups) if all([len(f.queue) for f in fs])]
     if len(ready):
@@ -202,5 +205,4 @@ def concurrently(*fs):
         ts.start()
     for t in ts:
         ts.join()
-
 
