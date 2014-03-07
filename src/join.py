@@ -144,16 +144,18 @@ def ordered_join(*f_groups):
                      to join-calculus) by those invocations (as a list of not exactly one fragement)
     '''
     condition = threading.Condition()
-    rc = None
+    rc, done = None, False
     index = 0
     for f_group in f_groups:
         def join_(fs, index):
+            nonlocal rc, done, condition
             params = join(*fs)
-            already_done = rc is not None
+            already_done = done
             if not already_done:
                 condition.acquire()
-            if rc is None:
-                params = (index, rc)
+            if not done:
+                rc = (index, params)
+                done = True
                 condition.notify()
                 condition.release()
             else:
@@ -167,7 +169,8 @@ def ordered_join(*f_groups):
         threading.Thread(target = join_, args = (f_group, index)).start()
         index += 1
     condition.acquire()
-    condition.wait()
+    if not done:
+        condition.wait()
     condition.release()
     return rc
 
