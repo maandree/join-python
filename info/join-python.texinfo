@@ -52,6 +52,7 @@ Texts. A copy of the license is included in the section entitled
 @menu
 * Overview::                        Brief overview of Join Python.
 * Signals::                         The signal construct.
+* Fragments::                       The fragment join construct.
 * GNU Free Documentation License::  Copying and sharing this manual.
 @end menu
 
@@ -135,6 +136,73 @@ In the next chapter fragments will be introduced.
 If you want a signal without a fragment capability
 use @code{@@puresignal} or @code{puresignal} instead
 of @code{@@signal} or @code{signal}.
+
+
+
+@node Fragments
+@chapter Fragments
+
+A fragment is a partial function. What this means is
+that you can make functions that block until all its
+fragments have returned. Signals return immediately.
+Waiting for a fragment is called joining,@footnote{Yes,
+it is a bit inconvenient that waiting for a thread
+or signal is also called joining.} when joining when
+a fragment you receive the arguments in was invoked with
+and the value it returned, the latter being an extension
+to join-calculus. Remember that a signal returns an
+object with an argumentless method name @code{join} that
+joins with the signal and returns that value the signal
+function returned.
+
+@cartouche
+@example
+>>> from join import *
+>>> 
+>>> @@fragment
+>>> def fragment(value):
+>>>     return value ** 2
+>>> 
+>>> def f(value):
+>>>     ((fragment_value,), _kwargs, rc) = join(fragment)
+>>>     return rc + fragment_value + value
+>>> 
+>>> fragment(2)
+>>> print(f(3))
+10
+@end example
+@end cartouche
+
+The function @code{join} returns a tuple of the positional
+arguments, the named arguments and the returned value.
+But you can also join with multiple fragemnts, in which case
+@code{join} returns a list of these tuples, one tuple for
+each fragment, in the same order as they appear as arguments
+for the @code{join} call.
+
+@cartouche
+@example
+>>> from join import *
+>>> 
+>>> @@fragment
+>>> def f1(value):
+>>>     return value ** 2
+>>> 
+>>> @@fragment
+>>> def f2(value):
+>>>     return value ** 3
+>>> 
+>>> def f(value):
+>>>     ((_args1, _kwargs1, rc1), (_args2, _kwargs2, rc2)) = join(f1, f2)
+>>>     return value + rc1 + rc2
+>>> 
+>>> f1(2)
+>>> f2(2)
+>>> print(f(2))
+14
+@end example
+@end cartouche
+
 
 
 @node GNU Free Documentation License
