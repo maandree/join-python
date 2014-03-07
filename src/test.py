@@ -114,3 +114,12 @@ unjoining(1)
 unjoining(2)
 print()
 
+
+def c(value):
+    print('  Not last (but often ordered): %i' % value)
+    time.sleep(1)
+
+print('Testing connurrently')
+concurrently(lambda : c(0), lambda : c(1), lambda : c(2), lambda : c(3))
+print('  Last (delayed c:a 1 s)')
+
