@@ -118,13 +118,13 @@ def c(value):
     print('  Not last (but often ordered): %i' % value)
     time.sleep(1)
 
-print('Testing connurrently')
+print('Testing concurrently')
 concurrently(lambda : c(0), lambda : c(1), lambda : c(2), lambda : c(3))
 print('  Last (delayed c:a 1 s)')
 print()
 
 
-print('Testing connurrently with @signal and @puresignal')
+print('Testing concurrently with @signal and @puresignal')
 concurrently(signal(lambda : c(0)), signal(lambda : c(1)), puresignal(lambda : c(2)), puresignal(lambda : c(3)))
 print('  Last (delayed c:a 1 s)')
 print()
