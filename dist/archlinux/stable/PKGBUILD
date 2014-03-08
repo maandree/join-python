@@ -11,7 +11,7 @@ install=join-python.install
 depends=(python3)
 makedepends=(texinfo)
 source=($url/archive/$pkgver.tar.gz)
-sha256sums=('')
+sha256sums=('070803c7b36c481020ce2515d0472b199c8ace0c81b91da0c0e8b56296b8016a')
 
 
 build() {
