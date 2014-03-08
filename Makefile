@@ -23,6 +23,10 @@ LICENSEDIR ?= $(DATADIR)/licenses
 
 # The name of the package as it should be installed
 PKGNAME ?= join-python
+# The version of python as in /usr/lib
+PYVERSION ?= 3.3
+# /usr/lib/python
+PYLIBDIR ?= $(LIBDIR)/python$(PYVERSION)
 
 
 # Build rules
@@ -77,7 +81,12 @@ install-all: install-base install-doc
 # Install base rules
 
 .PHONY: install-base
-install-base: install-license
+install-base: install-lib install-license
+
+.PHONY: install-lib
+install-lib:
+	install -dm755 -- "$(DESTDIR)$(PYLIBDIR)"
+	install -m644 src/join.py -- "$(DESTDIR)$(PYLIBDIR)/join.py"
 
 .PHONY: install-license
 install-license:
@@ -114,6 +123,7 @@ install-dvi: join-python.dvi
 
 .PHONY: uninstall
 uninstall:
+	-rm -- "$(DESTDIR)$(PYLIBDIR)/join.py"
 	-rm -- "$(DESTDIR)$(LICENSEDIR)/$(PKGNAME)/COPYING"
 	-rm -- "$(DESTDIR)$(LICENSEDIR)/$(PKGNAME)/LICENSE"
 	-rmdir -- "$(DESTDIR)$(LICENSEDIR)/$(PKGNAME)"
