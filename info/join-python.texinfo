@@ -167,7 +167,7 @@ function returned.
 >>>     return value ** 2
 >>> 
 >>> def f(value):
->>>     ((frag_value,), _kwargs, rc) = join(frag)
+>>>     (frag_value,), _kwargs, rc = join(frag)
 >>>     return rc + frag_value + value
 >>> 
 >>> frag(2)
@@ -196,7 +196,7 @@ for the @code{join} call.
 >>>     return value ** 3
 >>> 
 >>> def f(value):
->>>     ((_args1, _kwargs1, rc1), (_args2, _kwargs2, rc2)) = join(f1, f2)
+>>>     (_args1, _kwargs1, rc1), (_args2, _kwargs2, rc2) = join(f1, f2)
 >>>     return value + rc1 + rc2
 >>> 
 >>> f1(2)
@@ -249,11 +249,11 @@ that fragment group.
 >>>     pass
 >>> 
 >>> def ordered():
->>>     (case, (_jargs, _jkwargs, _jrc)) = ordered_join((f1,), (f2,), (f3,))
+>>>     case, (_args, _kwargs, _rc) = ordered_join((f1,), (f2,), (f3,))
 >>>     return case
 >>> 
 >>> def unordered():
->>>     (case, (_jargs, _jkwargs, _jrc)) = unordered_join((f1,), (f2,), (f3,))
+>>>     case, (_args, _kwargs, _rc) = unordered_join((f1,), (f2,), (f3,))
 >>>     return case
 >>> 
 >>> def switch(f):
