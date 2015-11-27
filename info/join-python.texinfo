@@ -115,7 +115,7 @@ first
 @end cartouche
 
 As an extension to join-calculus, signals
-in Join Java can be joined with the returned
+in Join Python can be joined with the returned
 value of the function can be fetched when joined.
 
 @cartouche
