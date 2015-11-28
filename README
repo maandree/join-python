@@ -1,12 +1,22 @@
-Join Python: Join-calculus for Python
+NAME
+	Join Python - Join-calculus for Python 3
 
-Extensions to join-calculus:
+DESCRIPTION
+	This library provides join-calculus to Python 3, with some extensions:
 
-	concurrently(f...) runs a set of functions concurrently
-	and joins with all of them.
+	*	concurrently(f...) runs a set of functions concurrently and
+		joins with all of them.
 
-	Signals have join() which joins with the signal and
-	returns its return (signals do not need to be void.)
+	*	Signals have join() which joins with the signal and returns
+		its return (signals do not need to be void.)
 
-	The return of fragments are returned when fetching.
+	*	The return of fragments are returned when fetching.
+
+RATIONALE
+	Join-calculus provides clean ways to perform asynchronous tasks.
+
+SEE ALSO
+	python(1), https://en.wikipedia.org/wiki/Join-calculus
+
+	Full documentation available locally via: info '(join-python)'
 
